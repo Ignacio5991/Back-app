@@ -35,56 +35,27 @@ class ProductManager {
       return console.log('Error al agregar el producto, hubo parametros sin completar');
     }
   }
-  async getProducts() {
-    const data = await readFile(this.path)
-    return data
+  async getProducts(limite) {
+    if (limite == undefined){
+        const data = await readFile(this.path)
+        return data
+    }else{
+        const {products} = await readFile (this.path);
+        const filtro = products.slice(0,limite);
+        return filtro;
+    }
   }
   getProductsById = async(id)=>{
-    const {productsDocument} = await readFile (this.path);
-    console.log (productsDocument)
-    const productId = productsDocument.find((product)=>product.id === id)
-    // if (productId){
-    //     return productId
-    // }else{
-    //     return null
-    // }
-    // this.productsDocument = productsDocument;
-    // let product = this.productsDocument.find((element)=>element.id===id);
-    // if (product){
-    //   return product;
-    // }else{
-    //   console.log("No se encuentra el producto con ese id")
-    //   return null;
-    // }
+    const {products} = await readFile (this.path);
+    const productId = products.find((product)=>product.id === id)
+    if (productId){
+        return productId
+    }else{
+        return null
+    }
 
   }
-//   getProductById = async(id) => { 
-//     if (fs.existsSync(`./products.json`)) {
-//         const objects = await JSON.parse(fs.readFileSync(this.path));
-        
-//         let idToSearch = (element) => element.id === id;
-//         let position = await objects.products.findIndex(idToSearch);
-//         if (position == -1) {
-//           return "No se encuentra ningún producto con ese ID"
-//         } else {
-//           return objects[position];
-//         }
-//     } else {
-//         console.log("No se encontró el archivo");
-//         }
-//     }
-  // async getProductById(id) {
-    // const productsDocument = await fs.promises.readFile(this.path);
-    // const productsJSON = JSON.parse(productsDocument);
-    // let position = await productsJSON.findIndex((Element)=>Element.id===id)
-    // return productsJSON[position];
-    // productsJSON.product.find((product) => product.id === id)
-    //   ? console.log(
-    //       `Este es el producto con el ID ${id}`,
-    //       productsJSON.products.filter((product) => product.id === id)
-    //     )
-    //   : console.log('Error Not Found');
-  // }
+
   async updateProducts(id, object) {
     if (id || object != undefined) {
       const productsDocument = await readFile(this.path);
