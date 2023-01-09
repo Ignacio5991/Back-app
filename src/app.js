@@ -22,8 +22,9 @@ server.get('/products/:pid', async (req,res)=>{
     let producto = await pm.getProductsById(id);
     if (producto == null){
         res.send("El producto no existe")
+    }else{
+        res.send(producto)
     }
-    res.send(producto)
 })
 
 server.listen(8080,()=>{
